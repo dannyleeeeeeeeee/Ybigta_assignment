@@ -1,0 +1,27 @@
+SELECT 
+    Cat.CategoryName,
+    SUM(OD.Quantity) AS TotalQuantitySold,
+    SUM(OD.Quantity * P.Price) AS TotalSalesAmount
+FROM 
+    Categories Cat
+JOIN 
+    Products P ON Cat.CategoryID = P.CategoryID
+JOIN 
+    OrderDetails OD ON P.ProductID = OD.ProductID
+GROUP BY 
+    Cat.CategoryName
+HAVING 
+    SUM(OD.Quantity * P.Price) > (
+        SELECT 
+            SUM(OD.Quantity * P.Price) 
+        FROM 
+            Categories Cat
+        JOIN 
+            Products P ON Cat.CategoryID = P.CategoryID
+        JOIN 
+            OrderDetails OD ON P.ProductID = OD.ProductID
+        WHERE 
+            Cat.CategoryName = 'Seafood'
+    )
+ORDER BY 
+    TotalSalesAmount DESC;

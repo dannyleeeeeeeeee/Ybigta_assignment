@@ -1,0 +1,16 @@
+SELECT 
+    Cat.CategoryName,
+    SUM(OD.Quantity) AS '판매량',
+    SUM(OD.Quantity * P.Price) AS '판매금액'
+FROM 
+    Categories Cat
+JOIN 
+    Products P ON Cat.CategoryID = P.CategoryID
+JOIN 
+    OrderDetails OD ON P.ProductID = OD.ProductID
+GROUP BY 
+    Cat.CategoryName
+HAVING 
+    SUM(OD.Quantity) > 2000
+ORDER BY 
+    '판매금액'

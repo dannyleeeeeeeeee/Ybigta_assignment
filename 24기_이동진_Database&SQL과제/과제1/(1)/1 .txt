@@ -1,0 +1,15 @@
+SELECT 
+    C.CustomerID, 
+    C.CustomerName, 
+    SUM(OD.Quantity * P.Price) AS '구매금액'
+FROM 
+    Customers C
+JOIN 
+    Orders O ON C.CustomerID = O.CustomerID
+JOIN 
+    OrderDetails OD ON O.OrderID = OD.OrderID
+JOIN 
+    Products P ON OD.ProductID = P.ProductID
+GROUP BY 
+    C.CustomerID, 
+    C.CustomerName;
